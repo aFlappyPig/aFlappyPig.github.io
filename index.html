@@ -172,6 +172,41 @@
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/01/26/web静态资源缓存/" >
+                
+                    <span>web静态资源缓存</span>
+            </a>
+            <a class="content-show-full" href = "/2018/01/26/web静态资源缓存/" >
+                <div class="abstract-content">
+                    声明：本文大部分内容系网上搜集并修改，如有侵权请告知。
+任何脱离业务特点的架构设计都是耍流氓
+1. 浏览器缓存基本认识浏览器缓存分为强缓存和协商缓存：
+
+1）浏览器在加载资源时，先根据这个资源的一些 http header 判断它是否命中强缓存，强缓存如果命中，浏览器直接从自己的缓存中读取资源，不会发请求到服务器。比如某个 css 文件，如果浏览器在加载它所在的网页时，这个 css 文件的缓存配置命中了强缓存，浏览器就直接从缓存中加载这个 css，连请求都不会发送到网页所在服务器；
+2）当强缓存没有命中的时候，浏览器一定会发送一个请求到服务器，通过服务器端依据资源的另外一些 http h...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = JS>JS</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 前端性能优化>前端性能优化</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/01/26</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/01/18/js中的小数计算/" >
                 
                     <span>js中的小数计算</span>
@@ -256,8 +291,6 @@ More...
             
         
     
-        
-    
 
                 </div>
                 
@@ -301,8 +334,6 @@ More...
             
                 <a href="https://github.com/aFlappyPig/" class="iconfont-archer github" target="_blank" title="github"></a>
             
-        
-    
         
     
 
@@ -352,7 +383,16 @@ More...
     
     
     
-    <div class="total-archive"> Total : 2 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 3 </div>
     
     <div class="post-archive">
     
@@ -361,6 +401,11 @@ More...
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/26</span><a class="archive-post-title" href= "/2018/01/26/web静态资源缓存/" >web静态资源缓存</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -378,6 +423,8 @@ More...
     <div class="sidebar-tags-name">
     
         <span class="sidebar-tag-name"><a href= "#">JS</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">前端性能优化</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
