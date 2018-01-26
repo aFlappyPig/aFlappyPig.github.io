@@ -234,7 +234,15 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">math.eval()</span><br></pre></td></tr></table></figure>
 <p>这个方法接收两个参数，一般只需要传第一个参数即可，第二个参数并没有什么卵用。第一个参数是字符串类型（如果是数组的，数组里面每个元素也必须是字符串）的，这里官网并没有说明，但是官网的例子全都是字符串，这也是我踩的第一个坑。这个字符串是一个表达式，就是需要计算的算式。还有一个地方需要注意的是小括号的位置，小括号必须包含在字符串中，而不能是 js 中，因为写在 js 中其实只是字符串的拼接，公式中的计算顺序就会出错。只有写在字符串中才能在公式计算的时候正确的先算小括号。第三个需要注意的是，如果在配置 mathjs 的时候把 type 配置成了 BigNumber，得到的是个对象，是需要用 toNumber()方法进行转换的。除此之外，Number 类型的 toFIxed()方法也是会丢失精度的，这个方法网上有很多实现。这里列举一种：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Number.prototype.toFixed = <span class="keyword">function</span> (length) &#123;</span><br><span class="line">        var carry = 0; //存放进位标志</span><br><span class="line">        var num, multiple; //num为原浮点数放大multiple倍后的数，multiple为10的length次方</span><br><span class="line">        var str = this + <span class="string">''</span>; //将调用该方法的数字转为字符串</span><br><span class="line">        var dot = str.indexOf(<span class="string">"."</span>); //找到小数点的位置</span><br><span class="line">        <span class="keyword">if</span> (str.substr(dot + length + 1, 1) &gt;= 5) carry = 1; //找到要进行舍入的数的位置，手动判断是否大于等于5，满足条件进位标志置为1</span><br><span class="line">        multiple = Math.pow(10, length); //设置浮点数要扩大的倍数</span><br><span class="line">        num = Math.floor(this * multiple) + carry; //去掉舍入位后的所有数，然后加上我们的手动进位数</span><br><span class="line">        var result = num / multiple + <span class="string">''</span>; //将进位后的整数再缩小为原浮点数</span><br><span class="line">        /*</span><br><span class="line">        * 处理进位后无小数</span><br><span class="line">        */</span><br><span class="line">        dot = result.indexOf(<span class="string">"."</span>);</span><br><span class="line">        <span class="keyword">if</span> (dot &lt; 0) &#123;</span><br><span class="line">            result += <span class="string">'.'</span>;</span><br><span class="line">            dot = result.indexOf(<span class="string">"."</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        /*</span><br><span class="line">        * 处理多次进位</span><br><span class="line">        */</span><br><span class="line">        var len = result.length - (dot + 1);</span><br><span class="line">        <span class="keyword">if</span> (len &lt; length) &#123;</span><br><span class="line">            <span class="keyword">for</span> (var i = 0; i &lt; length - len; i++) &#123;</span><br><span class="line">                result += 0;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">return</span> result;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><h4 id="2018-01-20"><a href="#2018-01-20" class="headerlink" title="2018-01-20"></a>2018-01-20</h4><p>今天在进行性能调优时，发现 mathjs 的包大小惊人的大，压缩之后竟然还有 500+kb，未压缩时有 1.6M+这在浏览器端简直是无法忍受的！所以建议在浏览器端慎用！以后再业务中还是考虑其他解决方案吧。</p>
+<h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><h4 id="2018-01-20"><a href="#2018-01-20" class="headerlink" title="2018-01-20"></a>2018-01-20</h4><p>今天在进行性能调优时，发现 mathjs 的包大小惊人的大，压缩之后竟然还有 500+kb，未压缩时有 1.6M+这在浏览器端简直是无法忍受的！所以建议在浏览器端慎用！以后再业务中还是考虑其他解决方案吧。调研了其他几个库：</p>
+<ul>
+<li><a href="https://github.com/MikeMcl/decimal.js" target="_blank" rel="noopener">decimal.js</a></li>
+<li><a href="https://github.com/MikeMcl/big.js" target="_blank" rel="noopener">big.js</a></li>
+<li><a href="https://github.com/MikeMcl/bignumber.js" target="_blank" rel="noopener">bignumber.js</a>
+计算方法如下</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0.3 - 0.1                     // 0.19999999999999998</span><br><span class="line">x = new Decimal(0.3)</span><br><span class="line">x.minus(0.1)                  // <span class="string">'0.2'</span></span><br><span class="line">x                             // <span class="string">'0.3'</span></span><br></pre></td></tr></table></figure>
+<p>这三个库非常有意思，作者是同一个人，使用方法和 api 基本一样，作者讲述了这三个库<a href="https://github.com/MikeMcl/big.js/wiki" target="_blank" rel="noopener">各自的特点和适用情况</a>。简单的来说，big.js 是三个库中最小和最简单的，配置项和方法最少，以十进制为基础，其他两个库可以支持十六进制等。decimal.js 的精度是用有效数字而不是小数位数来表示的，所有的计算都是精确的（类似于 Python 的十进制模块），而不是仅仅涉及到除法，所以更适合于科学计算等。decimal.js 还支持非整数幂，并增加了三角函数和 exp，ln 和 log 方法。而 bignumber.js 计算精度居中，在用除法可能会损失精度，进行较小指数计算时性能不高。（注：本人英语水平有限，翻译和理解可能不准确，欢迎批评指正。）<br>可以根据需要进行选择，这三个库的大小都是可以接受的，最大的decimal.js压缩后也只有31kb。</p>
 
     </article>
     <!-- 前后页  -->
@@ -354,7 +362,18 @@
     
     
     
-    <div class="total-archive"> Total : 3 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 4 </div>
     
     <div class="post-archive">
     
@@ -363,6 +382,11 @@
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/29</span><a class="archive-post-title" href= "/2018/01/29/web前端性能优化实战/" >web前端性能优化实战</a>
+        </li>
     
     
         <li class="archive-post-item">
