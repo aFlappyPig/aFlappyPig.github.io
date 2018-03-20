@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        web前端性能优化实战 · aFlappyPig&#39;s Blog
+        iconfont · aFlappyPig&#39;s Blog
         
     </title>
     <link rel="icon" href= /assets/favicon.ico>
@@ -73,7 +73,7 @@
                 <a href="/" >aFlappyPig&#39;s Blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">web前端性能优化实战</a>
+                <a href="#" class="post-name">iconfont</a>
             </div>
     </div>
     
@@ -94,7 +94,7 @@
                                                 <h1 class="intro-title">
                                                     <!-- 主页  -->
                                                     
-                                                                web前端性能优化实战
+                                                                iconfont
                                                                     <!-- 404 -->
                                                                     
                                                 </h1>
@@ -112,7 +112,9 @@
                                                     
                                                         <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-href = 前端性能优化>前端性能优化</a>
+        <a class="post-tag" href="javascript:void(0);" data-href = 相关技术>相关技术</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = SVG>SVG</a>
     
 </div>
                                                             
@@ -133,7 +135,7 @@
                                                                 </script>
                                                                 <div class="post-intro-meta">
                                                                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                                                                    <span class="post-intro-time">2018/01/29</span>
+                                                                    <span class="post-intro-time">2018/03/20</span>
                                                                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe604;</span>
                                                                     <span id="busuanzi_value_page_pv"></span>
@@ -216,39 +218,42 @@
                                                     <div class="container container-unloaded">
                                                         <main class="main post-page">
     <article class="article-entry">
-        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>记得刚接手这个项目时，PM 直接从网上找了一个 bootstrap 模板，然后找了一家外包公司，以一个页面大概 500 软妹币的价格定制了现在项目的 html 和 css 源码。当然，这都是我进公司之前的事了，当时公司没有前端，只有三个 java 后台。当时进公司的第一天，我的内心是崩溃的，整个项目前后端不分离，后端模板和路由，前端只负责 angularjs 做数据绑定，至今我还记得那个兼职的架构师在制定完架构之后看到我之后惊呼道：“我们还有前端啊！”。对，在原本的规划中，他们是不需要前端的，但是后台不 angularjs，这又和架构师的设想不太一样。第二天，我开始尝试着跑项目，我又一次震惊了，整个项目打开登录页面速度很快，但是进入主页需要将近 5s！然后我试着去看了时间主要花费在哪里，我看到首页加载了 80+js 文件，全都是各种 js 插件和 bootstrap 组件，而且加载顺序是错乱的。再仔细看业务相关的 js 文件，完全没有加载顺序相关的控制逻辑，到处都是全局变量，jquery 和 angular 混杂，angularjs 确实只负责了做数据绑定，主要交互竟然全都交给了 jquery 做。于是，我决定我的第一个任务就是来改造这个加载速度。</p>
-<h4 id="性能瓶颈分析"><a href="#性能瓶颈分析" class="headerlink" title="性能瓶颈分析"></a>性能瓶颈分析</h4><p>经过两天的仔细研究，我仔细百度了每一个 js 文件的作用和用法，因为原模板是老外写的，用到了很多国内不是很常见的 js 插件，很多插件的版本也很老，原模板是纯 jquery 的，现在又混入了 angularjs，所以感觉整个完全没有设计，非常混乱。综合考虑，我采用了如下的做法：</p>
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这是一篇关于 iconfont 的理解和总结。<a href="http://www.iconfont.cn" target="_blank" rel="noopener">iconfont</a> 是阿里巴巴提供的一个在线选取和制作字体图标的网站，该网站提供了很多官网网站的图标供免费下载和使用，为字体图标的使用和推广提供了良好的社区环境。该站提供了 web 端，Android 端和 IOS 端三种使用字体图标的情况和代码示例。当然，本文只探讨 web 端。</p>
+<h3 id="iconfont-在-web-中的使用"><a href="#iconfont-在-web-中的使用" class="headerlink" title="iconfont 在 web 中的使用"></a>iconfont 在 web 中的使用</h3><p>在 web 中使用 iconfont 主要有三种方式：</p>
+<h4 id="直接使用-Unicode-码点"><a href="#直接使用-Unicode-码点" class="headerlink" title="直接使用 Unicode 码点"></a>直接使用 Unicode 码点</h4><p>unicode 是字体在网页端最原始的应用方式，特点如下：</p>
 <ul>
-<li>1&gt; 删除目前业务不太可能用到的插件，特别是生僻的插件</li>
-<li>2&gt; 对重要插件进行版本升级</li>
-<li>3&gt; 使用 gulp 对多处使用的插件打包压缩</li>
+<li>兼容性最好，支持 ie6+，及所有现代浏览器。</li>
+<li>支持按字体的方式去动态调整图标大小，颜色等等。</li>
+<li>但是因为是字体，所以不支持多色。</li>
 </ul>
-<p>最终，我得到了一个体积接近 3M 的包，公有 css 也有将近 200kb。首页加载速度优化到了 800ms。<br><img src="https://blog-1255356076.cos.ap-shanghai.myqcloud.com/TIM%E6%88%AA%E5%9B%BE20180126164340.png"><br>虽然效果很明显，但是这还远远不够，800ms 对于系统来说体验太差了。但是 PM 和 leader 显然丝毫不在乎这种事，毕竟对于之前的 5s，这显然已经好太多了。但是作为一个前端工程师，我是非常不满足的，我觉得一个优秀的产品加载速度应该不能超过 300ms。从上面这张图可以看出，现在时间花费主要有这几个方面：</p>
+<p>使用步骤如下：<br>第一步：拷贝项目下面生成的 font-face<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">font-face</span> &#123;</span><br><span class="line">    <span class="attribute">font-family</span>: <span class="string">'iconfont'</span>;</span><br><span class="line">    <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">'iconfont.eot'</span>);</span><br><span class="line">    <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">'iconfont.eot?#iefix'</span>) <span class="built_in">format</span>(<span class="string">'embedded-opentype'</span>),</span><br><span class="line">    <span class="built_in">url</span>(<span class="string">'iconfont.woff'</span>) <span class="built_in">format</span>(<span class="string">'woff'</span>),</span><br><span class="line">    <span class="built_in">url</span>(<span class="string">'iconfont.ttf'</span>) <span class="built_in">format</span>(<span class="string">'truetype'</span>),</span><br><span class="line">    <span class="built_in">url</span>(<span class="string">'iconfont.svg#iconfont'</span>) <span class="built_in">format</span>(<span class="string">'svg'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>第二步：定义使用 iconfont 的样式<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.iconfont</span>&#123;</span><br><span class="line">    <span class="attribute">font-family</span>:<span class="string">"iconfont"</span> <span class="meta">!important</span>;</span><br><span class="line">    <span class="attribute">font-size</span>:<span class="number">16px</span>;<span class="attribute">font-style</span>:normal;</span><br><span class="line">    <span class="attribute">-webkit-font-smoothing</span>: antialiased;</span><br><span class="line">    <span class="attribute">-webkit-text-stroke-width</span>: <span class="number">0.2px</span>;</span><br><span class="line">    <span class="attribute">-moz-osx-font-smoothing</span>: grayscale;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>第三步：挑选相应图标并获取字体编码，应用于页面<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"iconfont"</span>&gt;</span>&amp;#x33;<span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="font-class-引用"><a href="#font-class-引用" class="headerlink" title="font-class 引用"></a>font-class 引用</h4><p>font-class 是 unicode 使用方式的一种变种，主要是解决 unicode 书写不直观，语意不明确的问题。与 unicode 使用方式相比，具有如下特点：</p>
 <ul>
-<li>1&gt; 文件过多可以看出每个文件的加载时长都不是很长，但是首页需要加载将近 12 个文件，按照 chrome 一个域名下最多同时开启 6 个 http 通道的话，也需要至少两轮，所以有很多时间是浪费在等待上面的。（实际测试中发现同时并没有开启那么多 http 通道，可能是我观测的方式不对。）</li>
-<li>2&gt; 请求过多首页每个类目单独的接口，后台为了追求解耦合，每个请求单独的接口，也没有提供每个页面初始化的单独接口，所以造成了 http 请求通道的占用和阻塞。与后台协商未果，后台表示不愿意修改和增加接口。卒。</li>
-<li>3&gt; 接口性能后台接口性能差，每个接口基本都在 100ms 以上，这也直接影响了整个系统的性能。</li>
+<li>兼容性良好，支持 ie8+，及所有现代浏览器。</li>
+<li>相比于 unicode 语意明确，书写更直观。</li>
+<li>因为使用 class 来定义图标，所以当要替换图标时，只需要修改 class 里面的 unicode 引用。</li>
+<li>不过因为本质上还是使用的字体，所以多色图标还是不支持的。</li>
 </ul>
-<p>网络这块我已经无能为力了，之所以 js 文件大是因为数量多，数量多是因为业务中大量用到了 DataTable，DataTable 及其扩展插件就有十几个，大小将近 1M。实际业务中，有涉及到小数计算部分，虽然是简单的四则运算，但这是前端 js 最不擅长的啊，因为之前一直也没做到过这块（之前都是后台提供接口，现项目后台不愿意提供，觉得麻烦），后来在技术选型时做的调研不够，引用了 math.js，这个库压缩之后仍有 500kb，后来发现时因为使用过多，已经来不及修改了。接下来是性能测试：</p>
-<img src="https://blog-1255356076.cos.ap-shanghai.myqcloud.com/TIM%E6%88%AA%E5%9B%BE20180126173156.png">
-<p>根据上图可以看出，chrome 确实是可以同时开启 6 个 http 通道下载的，但是不总是这样，这可能和 cpu 以及内存都有关系，属于浏览器内核的策略，不是代码能够控制的。所以这部分被阻塞的 http 请求浪费的时间无能为力了。这些接口请求完成后引起的页面的 repaint 也是无法挽回的。主线程上的执行情况是错综复杂的，本人能力有限，也只能解读一部分。首先是接收到了 html 文件之后开始解析（蓝色部分），然后遇到了三个 css 文件，开始下载并解析 css 文件（紫色部分），然后遇到了 js 文件，开始下载 js 文件（算是浅蓝色吧），下载完第一个 js 之后开始执行（黄色部分），这个时候主进程是被阻塞的不能继续解析 HTML 和 css，因为第一个 js 文件很大，所以执行花费了很久（368ms），然后继续解析 html 和 css，解析这段 html 也花费了很久（600+ms），中间夹杂着各种 jquery 的插件在 DOMContentLoaded 之后的各种初始化然后引起的页面结构和样式的变化和 repaint。这里我不是很理解为什么解析 html 会花费了这么长时间，初步猜测是因为后台模板替换的时候导致生成的 html 文件结构有些错乱，后台模板文件我也不懂，后台里面他们也是第一次用。。。至于这部分 jquery 插件的初始化，也是花费了相当多的时间，加上接口返回数据慢，angularjs 拿到数据之后又进行绑定，而且整个项目并没有完全交给 angular 接管，js 文件的执行顺序基本不可控，最终导致了这个加载和渲染过程的不可控。到这里为止，我感觉自己已经无能为力了。我也向 leader 提出了重构，但是得到的答案是没有时间和精力。这里我对 freemarker 这款后端模板不是很了解，但是就我看来，这应该也是一款功能很强大的模板，它是完全有能力在后端进行数据输出的，但是在这个项目中，它仅仅用来做某些按钮的显示和移除（权限）。</p>
+<p>使用步骤如下：<br>第一步：拷贝项目下面生成的 fontclass 代码：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//at.alicdn.com/t/font_8d5l8fzk5b87iudi.css</span><br></pre></td></tr></table></figure><br>第二步：挑选相应图标并获取类名，应用于页面：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"iconfont icon-xxx"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="symbol-引用"><a href="#symbol-引用" class="headerlink" title="symbol 引用"></a>symbol 引用</h4><p>这是一种全新的使用方式，应该说这才是未来的主流，也是平台目前推荐的用法。相关介绍可以参考这篇文章 这种用法其实是做了一个 svg 的集合，与上面两种相比具有如下特点：</p>
+<ul>
+<li>支持多色图标了，不再受单色限制。</li>
+<li>通过一些技巧，支持像字体那样，通过 font-size,color 来调整样式。</li>
+<li>兼容性较差，支持 ie9+,及现代浏览器。</li>
+<li>浏览器渲染 svg 的性能一般，还不如 png。</li>
+</ul>
+<p>使用步骤如下：<br>第一步：拷贝项目下面生成的 symbol 代码：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js</span><br></pre></td></tr></table></figure><br>第二步：加入通用 css 代码（引入一次就行）：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.icon</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">1em</span>; <span class="attribute">height</span>: <span class="number">1em</span>;</span><br><span class="line">    <span class="attribute">vertical-align</span>: -<span class="number">0.15em</span>;</span><br><span class="line">    <span class="attribute">fill</span>: currentColor;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>第三步：挑选相应图标并获取类名，应用于页面：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">class</span>=<span class="string">"icon"</span> <span class="attr">aria-hidden</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">use</span> <span class="attr">xlink:href</span>=<span class="string">"#icon-xxx"</span>&gt;</span><span class="tag">&lt;/<span class="name">use</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>以上三种方式各有优劣，在选取技术方案时需要结合项目的兼容性需求和开发体验（打包工具的协作）进行综合考虑。一般建议方案三。<br>常见的bootstrap使用的是方案二，这也是大多数css框架采用的方案（兼容性+使用方便），毕竟css框架都不提供彩色图标。<br>移动端如果有优化加载字体大小和速度的需求，可使用<a href="http://font-spider.org/" target="_blank" rel="noopener">字蛛</a>工具优化，但和打包工具的结合使用可能会有些麻烦。<br>对于方案三，其实用的是字体图标图片的svg格式，便于操作和调整，设计软件可直接导出svg格式，也可从网站上下载svg文件使用，如果必要，svg也可以采用懒加载的方式引入。<br>对于方案一和方案二，前提是先引入iconfont字体图标字体文件：比如’&amp;#xe7bb’; 其中&amp;#是开头用以标明这是字符实体，x表示这是十六进制，而CSS的伪元素的content接受的也是16进制的Unicode编码，所以可以直接写 content: “\e7bb”。</p>
 
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
         
-            <li class="next">
-                <a href="/2018/03/20/iconfont/" title=< %- page.prev.title  >
-                    <span>上一篇</span>
-                    <span>iconfont</span>
-                </a>
-            </li>
-            
                 
                     <li class="previous">
-                        <a href="/2018/01/26/web静态资源缓存/" title=< %- page.next.title  >
+                        <a href="/2018/01/29/web前端性能优化实战/" title=< %- page.next.title  >
                     <span>下一篇</span>
-                    <span>web静态资源缓存</span>
+                    <span>web前端性能优化实战</span>
                 </a>
                     </li>
                     
@@ -310,7 +315,7 @@
                                                     <div class="toc-catalog">
                                                         <span class="iconfont-archer catalog-icon">&#xe613;</span><span>目录</span>
                                                     </div>
-                                                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#性能瓶颈分析"><span class="toc-number">2.</span> <span class="toc-text">性能瓶颈分析</span></a></li></ol>
+                                                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iconfont-在-web-中的使用"><span class="toc-number">2.</span> <span class="toc-text">iconfont 在 web 中的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#直接使用-Unicode-码点"><span class="toc-number">2.1.</span> <span class="toc-text">直接使用 Unicode 码点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#font-class-引用"><span class="toc-number">2.2.</span> <span class="toc-text">font-class 引用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#symbol-引用"><span class="toc-number">2.3.</span> <span class="toc-text">symbol 引用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
                                                 </div>
                                                 
                                                     <div class="back-top">&#xe639;</div>
