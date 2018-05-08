@@ -158,6 +158,35 @@
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/05/05/electron实践/" >
+                
+                    <span>electron实践</span>
+            </a>
+            <a class="content-show-full" href = "/2018/05/05/electron实践/" >
+                <div class="abstract-content">
+                    最近在研究把现有的项目迁移到 electron 中，因为公司的目标是做一个平台，需要提供多种业务场景支持，业务相当复杂，目前已经涉及到 3 种业务，具体页面已经超过 80 个。之前也一直考虑单页面重构的可能性，可是越做项目越大，感觉单页面重构已经基本不可能（需要花费太多的时间和精力，后期维护难度也更大）。
+昨天遇到一个坑，在使用系统托盘功能的时候，系统托盘图标会过几秒自动消失。第一反应是可能图标大小和格式不对，更换之后问题并没有解决。网上找了很多资料，完全没有提到这块的，于是去 github 提了 issue。大约 5 个小时后得到了反馈，官方说是代码问题，因为系统托盘被赋值给了一个局部...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = electron>electron</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/05/05</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/03/16/JS引擎的执行机制/" >
                 
                     <span>JS引擎的执行机制</span>
@@ -420,32 +449,6 @@ CSRF 攻击原理CSRF 攻击攻击原理及过程如下：
             </div>
         </article>
     
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2016/10/01/hello-world/" >
-                
-                    <span>Hello World</span>
-            </a>
-            <a class="content-show-full" href = "/2016/10/01/hello-world/" >
-                <div class="abstract-content">
-                    Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post1$ hexo new "My New Post"
-More info: Writing
-Run server1$ hexo server
-More...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2016/10/01</span>
-                </div>
-            </div>
-        </article>
-    
     <!-- paginator  -->
     
 </main>
@@ -596,18 +599,6 @@ More...
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
@@ -617,6 +608,11 @@ More...
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/05</span><a class="archive-post-title" href= "/2018/05/05/electron实践/" >electron实践</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -667,20 +663,6 @@ More...
             <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2017/09/05/AngularJs的性能优化/" >AngularJs的性能优化</a>
         </li>
     
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2016 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2016/10/01/hello-world/" >Hello World</a>
-        </li>
-    
     </div>
   </div>
             <div class="sidebar-tags">
@@ -692,15 +674,17 @@ More...
     
         <span class="sidebar-tag-name"><a href= "#">前端性能优化</a></span>
     
+        <span class="sidebar-tag-name"><a href= "#">JS 基本原理</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">相关技术</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">SVG</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">JS</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">WEB安全</a></span>
+        <span class="sidebar-tag-name"><a href= "#">electron</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">JS 基本原理</a></span>
+        <span class="sidebar-tag-name"><a href= "#">WEB安全</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">

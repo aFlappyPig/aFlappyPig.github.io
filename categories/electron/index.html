@@ -158,18 +158,14 @@
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2017/10/15/关于XSS/" >
+            <a class="abstract-title" href = "/2018/05/05/electron实践/" >
                 
-                    <span>关于XSS</span>
+                    <span>electron实践</span>
             </a>
-            <a class="content-show-full" href = "/2017/10/15/关于XSS/" >
+            <a class="content-show-full" href = "/2018/05/05/electron实践/" >
                 <div class="abstract-content">
-                    XSS 简介跨站脚本攻击(Cross Site Scripting)，为了不和层叠样式表(Cascading Style Sheets, CSS)的缩写混淆，故将跨站脚本攻击缩写为 XSS。恶意攻击者往 Web 页面里插入恶意 Script 代码，当用户浏览该页之时，嵌入其中 Web 里面的 Script 代码会被执行，从而达到恶意攻击用户的目的。跨站点脚本（XSS）攻击发生在以下情况下：
-
-1.数据通过不受信任的来源进入 Web 应用程序，通常是 Web 请求。
-2.数据包含在发送给 Web 用户而不经过恶意内容验证的动态内容中。
-
-发送到 Web 浏览器的恶意内容通常采用 JavaS...
+                    最近在研究把现有的项目迁移到 electron 中，因为公司的目标是做一个平台，需要提供多种业务场景支持，业务相当复杂，目前已经涉及到 3 种业务，具体页面已经超过 80 个。之前也一直考虑单页面重构的可能性，可是越做项目越大，感觉单页面重构已经基本不可能（需要花费太多的时间和精力，后期维护难度也更大）。
+昨天遇到一个坑，在使用系统托盘功能的时候，系统托盘图标会过几秒自动消失。第一反应是可能图标大小和格式不对，更换之后问题并没有解决。网上找了很多资料，完全没有提到这块的，于是去 github 提了 issue。大约 5 个小时后得到了反馈，官方说是代码问题，因为系统托盘被赋值给了一个局部...
                 </div>
             </a>
             <div class="abstract-post-meta">
@@ -177,53 +173,13 @@
                 
                 <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-href = WEB安全>WEB安全</a>
+        <a class="post-tag" href="javascript:void(0);" data-href = electron>electron</a>
     
 </div>
                 
                 <!-- date  -->
                 <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/10/15</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2017/10/02/关于CSRF/" >
-                
-                    <span>关于CSRF</span>
-            </a>
-            <a class="content-show-full" href = "/2017/10/02/关于CSRF/" >
-                <div class="abstract-content">
-                    CSRF 简介CSRF 是 Cross-Site Request Forgery 的简称，中文译为跨站请求伪造，也被称为单击攻击或者会话叠置，是一种恶意利用从网站信任用户获取未授权命令的行为。和跨站脚本(XSS)不同，XSS 利用的是特定站点信任的用户，而 CSRF 利用的是用户浏览器中信任的站点。
-CSRF 攻击原理CSRF 攻击攻击原理及过程如下：
-
-
-用户 C 打开浏览器，访问受信任网站 A，输入用户名和密码请求登录网站 A；
-
-
-
-在用户信息通过验证后，网站 A 产生 Cookie 信息并返回给浏览器，此时用户登录网站 A 成功，可以正常发送请求到网站 A；
-
-
-
-用户未退出网站...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = WEB安全>WEB安全</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/10/02</span>
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/05/05</span>
                 </div>
             </div>
         </article>

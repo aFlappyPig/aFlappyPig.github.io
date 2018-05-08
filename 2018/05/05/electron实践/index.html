@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        aFlappyPig&#39;s Blog
+        electron实践 · aFlappyPig&#39;s Blog
         
     </title>
     <link rel="icon" href= /assets/favicon.ico>
@@ -58,12 +58,24 @@
 </head>
 
     
+
+                <body class="post-body">
+                    
                                         
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >aFlappyPig&#39;s Blog.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">electron实践</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>aFlappyPig's Blog.</a>
 </header>
@@ -72,21 +84,70 @@
     
         <!-- 主页  -->
         
-                                            <div class="site-intro-img" style="background-image: url(/)"></div>
+                    
+                        <!-- 404页  -->
+                        
+                                            <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
                                             <div class="site-intro-placeholder"></div>
                                             <div class="site-intro-meta">
                                                 <!-- 标题  -->
                                                 <h1 class="intro-title">
                                                     <!-- 主页  -->
                                                     
+                                                                electron实践
+                                                                    <!-- 404 -->
+                                                                    
                                                 </h1>
                                                 <!-- 副标题 -->
                                                 <p class="intro-subtitle">
                                                     <!-- 主页副标题  -->
                                                     
+                                                                        
+                                                                                    <!-- 404 -->
+                                                                                    
                                                 </p>
                                                 <!-- 文章页meta -->
                                                 
+                                                    <!-- 文章页标签  -->
+                                                    
+                                                        <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = electron>electron</a>
+    
+</div>
+                                                            
+                                                                <script>
+                                                                    window._bd_share_config = {
+                                                                        "common": {
+                                                                            "bdSnsKey": {},
+                                                                            "bdText": "",
+                                                                            "bdMini": "2",
+                                                                            "bdMiniList": false,
+                                                                            "bdPic": "",
+                                                                            "bdStyle": "1",
+                                                                            "bdSize": "16"
+                                                                        },
+                                                                        "share": {}
+                                                                    };
+                                                                    with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = "/static/api/js/share.js"];
+                                                                </script>
+                                                                <div class="post-intro-meta">
+                                                                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                                                                    <span class="post-intro-time">2018/05/05</span>
+                                                                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe604;</span>
+                                                                    <span id="busuanzi_value_page_pv"></span>
+                                                                    </span>
+                                                                    <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">
+                        &#xe601;
+                    </span>
+                                                                    <span class="bdsharebuttonbox">
+                        <a href="#" class="bds_more shareText" data-cmd="more">分享</a>
+                    </span>
+                                                                    </span>
+                                                                </div>
+                                                                
                                             </div>
 </div>
                                                     <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
@@ -153,83 +214,39 @@
                                                         }
                                                     </script>
                                                     <div class="container container-unloaded">
-                                                        <main class="main index-page">
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2017/10/15/关于XSS/" >
+                                                        <main class="main post-page">
+    <article class="article-entry">
+        <p>最近在研究把现有的项目迁移到 electron 中，因为公司的目标是做一个平台，需要提供多种业务场景支持，业务相当复杂，目前已经涉及到 3 种业务，具体页面已经超过 80 个。之前也一直考虑单页面重构的可能性，可是越做项目越大，感觉单页面重构已经基本不可能（需要花费太多的时间和精力，后期维护难度也更大）。</p>
+<p>昨天遇到一个坑，在使用系统托盘功能的时候，系统托盘图标会过几秒自动消失。第一反应是可能图标大小和格式不对，更换之后问题并没有解决。网上找了很多资料，完全没有提到这块的，于是去 github 提了 issue。大约 5 个小时后得到了反馈，官方说是代码问题，因为系统托盘被赋值给了一个局部变量导致被 gc 了。一脸懵逼。从未听说过用 let 声明的函数作用域的变量会被自动 gc 掉（没有手动释放），而且文档中也丝毫没有提到过，个人猜测是 electron 对 v8 的定制化加强 gc。</p>
+<p>公司业务有需求，希望像 chrome 一样可以开多个 tab 页对应于不同的业务场景。仔细看了 electron 的文档，发现 electron 只能新开 BrowserWindow，不能像 chrome 一样启动多个 tab 页，并且每个 tab 页单独进程。之所以这么考虑，是因为本身项目是多页面应用，而且是平台类，希望可以做到开多个 tab。从用户的角度来说，这些需求都是合理的。</p>
+<p>我不反对使用单页面，但是也不能无脑的就觉得单页面是无所不能的。根据我以往的开发经验来看，当项目大到一定程度来说，总会变得难以维护，性能也总会有点差强人意。单页面也好，多页面也好，其实都要针对用户的需求来决定，任何脱离业务的架构都是耍流氓。</p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
                 
-                    <span>关于XSS</span>
-            </a>
-            <a class="content-show-full" href = "/2017/10/15/关于XSS/" >
-                <div class="abstract-content">
-                    XSS 简介跨站脚本攻击(Cross Site Scripting)，为了不和层叠样式表(Cascading Style Sheets, CSS)的缩写混淆，故将跨站脚本攻击缩写为 XSS。恶意攻击者往 Web 页面里插入恶意 Script 代码，当用户浏览该页之时，嵌入其中 Web 里面的 Script 代码会被执行，从而达到恶意攻击用户的目的。跨站点脚本（XSS）攻击发生在以下情况下：
+                    <li class="previous">
+                        <a href="/2018/03/16/JS引擎的执行机制/" title=< %- page.next.title  >
+                    <span>下一篇</span>
+                    <span>JS引擎的执行机制</span>
+                </a>
+                    </li>
+                    
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
 
-1.数据通过不受信任的来源进入 Web 应用程序，通常是 Web 请求。
-2.数据包含在发送给 Web 用户而不经过恶意内容验证的动态内容中。
+<!-- City版安装代码已完成 -->
+        
+            
+                <!--PC版-->
 
-发送到 Web 浏览器的恶意内容通常采用 JavaS...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = WEB安全>WEB安全</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/10/15</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2017/10/02/关于CSRF/" >
-                
-                    <span>关于CSRF</span>
-            </a>
-            <a class="content-show-full" href = "/2017/10/02/关于CSRF/" >
-                <div class="abstract-content">
-                    CSRF 简介CSRF 是 Cross-Site Request Forgery 的简称，中文译为跨站请求伪造，也被称为单击攻击或者会话叠置，是一种恶意利用从网站信任用户获取未授权命令的行为。和跨站脚本(XSS)不同，XSS 利用的是特定站点信任的用户，而 CSRF 利用的是用户浏览器中信任的站点。
-CSRF 攻击原理CSRF 攻击攻击原理及过程如下：
+                    <!--PC版-->
 
 
-用户 C 打开浏览器，访问受信任网站 A，输入用户名和密码请求登录网站 A；
-
-
-
-在用户信息通过验证后，网站 A 产生 Cookie 信息并返回给浏览器，此时用户登录网站 A 成功，可以正常发送请求到网站 A；
-
-
-
-用户未退出网站...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = WEB安全>WEB安全</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/10/02</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
-    
+                        
+                            <!-- 评论 -->
 </main>
                                                             <!-- profile -->
                                                             
@@ -270,6 +287,13 @@ CSRF 攻击原理CSRF 攻击攻击原理及过程如下：
                                             </div>
                                             <!-- toc -->
                                             
+                                                <div class="toc-wrapper">
+                                                    <div class="toc-catalog">
+                                                        <span class="iconfont-archer catalog-icon">&#xe613;</span><span>目录</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                                
                                                     <div class="back-top">&#xe639;</div>
                                                     <div class="sidebar">
     <div class="sidebar-header sidebar-header-show-archive">
