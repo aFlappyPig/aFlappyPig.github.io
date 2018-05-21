@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        关于CSRF · aFlappyPig&#39;s Blog
+        aFlappyPig&#39;s Blog
         
     </title>
     <link rel="icon" href= /assets/favicon.ico>
@@ -59,23 +59,14 @@
 
     
 
-                <body class="post-body">
-                    
+        <body class="home-body">
+            
                                         
-<header class="header">
+<header class="header index-header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
-    
-    <div class="banner">
-            <div class="blog-title">
-                <a href="/" >aFlappyPig&#39;s Blog.</a>
-            </div>
-            <div class="post-title">
-                <a href="#" class="post-name">关于CSRF</a>
-            </div>
-    </div>
     
     <a class="home-link" href=/>aFlappyPig's Blog.</a>
 </header>
@@ -84,70 +75,32 @@
     
         <!-- 主页  -->
         
-                    
-                        <!-- 404页  -->
-                        
-                                            <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+            
+                <!-- 文章页  -->
+                
+                                            <div class="site-intro-img" style="background-image: url(/intro/desktop.jpg)"></div>
                                             <div class="site-intro-placeholder"></div>
                                             <div class="site-intro-meta">
                                                 <!-- 标题  -->
                                                 <h1 class="intro-title">
                                                     <!-- 主页  -->
                                                     
-                                                                关于CSRF
-                                                                    <!-- 404 -->
-                                                                    
+                                                        aFlappyPig's Blog.
+                                                            <!-- 文章页  -->
+                                                            
                                                 </h1>
                                                 <!-- 副标题 -->
                                                 <p class="intro-subtitle">
                                                     <!-- 主页副标题  -->
                                                     
-                                                                        
-                                                                                    <!-- 404 -->
-                                                                                    
+                                                        
+                                                            勿忘初心 及时行乐
+                                                                
+                                                                    <!-- 文章页  -->
+                                                                    
                                                 </p>
                                                 <!-- 文章页meta -->
                                                 
-                                                    <!-- 文章页标签  -->
-                                                    
-                                                        <div class= post-intro-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = WEB安全>WEB安全</a>
-    
-</div>
-                                                            
-                                                                <script>
-                                                                    window._bd_share_config = {
-                                                                        "common": {
-                                                                            "bdSnsKey": {},
-                                                                            "bdText": "",
-                                                                            "bdMini": "2",
-                                                                            "bdMiniList": false,
-                                                                            "bdPic": "",
-                                                                            "bdStyle": "1",
-                                                                            "bdSize": "16"
-                                                                        },
-                                                                        "share": {}
-                                                                    };
-                                                                    with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = "/static/api/js/share.js"];
-                                                                </script>
-                                                                <div class="post-intro-meta">
-                                                                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                                                                    <span class="post-intro-time">2017/10/02</span>
-                                                                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
-                    <span class="iconfont-archer">&#xe604;</span>
-                                                                    <span id="busuanzi_value_page_pv"></span>
-                                                                    </span>
-                                                                    <span class="shareWrapper">
-                    <span class="iconfont-archer shareIcon">
-                        &#xe601;
-                    </span>
-                                                                    <span class="bdsharebuttonbox">
-                        <a href="#" class="bds_more shareText" data-cmd="more">分享</a>
-                    </span>
-                                                                    </span>
-                                                                </div>
-                                                                
                                             </div>
 </div>
                                                     <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
@@ -214,84 +167,127 @@
                                                         }
                                                     </script>
                                                     <div class="container container-unloaded">
-                                                        <main class="main post-page">
-    <article class="article-entry">
-        <h3 id="CSRF-简介"><a href="#CSRF-简介" class="headerlink" title="CSRF 简介"></a>CSRF 简介</h3><p>CSRF 是 <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet" target="_blank" rel="noopener">Cross-Site Request Forgery</a> 的简称，中文译为跨站请求伪造，也被称为单击攻击或者会话叠置，是一种恶意利用从网站信任用户获取未授权命令的行为。和跨站脚本(XSS)不同，XSS 利用的是特定站点信任的用户，而 CSRF 利用的是用户浏览器中信任的站点。</p>
-<h3 id="CSRF-攻击原理"><a href="#CSRF-攻击原理" class="headerlink" title="CSRF 攻击原理"></a>CSRF 攻击原理</h3><p>CSRF 攻击攻击原理及过程如下：</p>
-<ul>
-<li><ol>
-<li>用户 C 打开浏览器，访问受信任网站 A，输入用户名和密码请求登录网站 A；</li>
-</ol>
-</li>
-<li><ol>
-<li>在用户信息通过验证后，网站 A 产生 Cookie 信息并返回给浏览器，此时用户登录网站 A 成功，可以正常发送请求到网站 A；</li>
-</ol>
-</li>
-<li><ol>
-<li>用户未退出网站 A 之前，在同一浏览器中，打开一个 TAB 页访问网站 B；</li>
-</ol>
-</li>
-<li><ol>
-<li>网站 B 接收到用户请求后，返回一些攻击性代码，并发出一个请求要求访问第三方站点 A；</li>
-</ol>
-</li>
-<li><ol>
-<li>浏览器在接收到这些攻击性代码后，根据网站 B 的请求，在用户不知情的情况下携带 Cookie 信息，向网站 A 发出请求。网站 A 并不知道该请求其实是由 B 发起的，所以会根据用户 C 的 Cookie 信息以 C 的权限处理该请求，导致来自网站 B 的恶意代码被执行。</li>
-</ol>
-</li>
-</ul>
-<p>从以上原理可以看出，CSRF 是利用浏览器发起的代理人攻击。其原理是攻击者构造网站后台某个功能接口的请求地址，诱导用户去点击或者用特殊方法让该请求地址自动加载。用户在登录状态下这个请求被服务端接收后会被误以为是用户合法的操作。对于 GET 形式的接口地址可轻易被攻击，对于 POST 形式的接口地址也不是百分百安全，攻击者可诱导用户进入带 Form 表单可用 POST 方式提交参数的页面。</p>
-<h3 id="CSRF-防范"><a href="#CSRF-防范" class="headerlink" title="CSRF 防范"></a>CSRF 防范</h3><p>目前防御 CSRF 攻击有很多种策略，上面的链接中也讨论了多种方案。简单列举如下：</p>
-<ul>
-<li><p>1.验证识别请求来源</p>
-<p>这里是指通过 Origin 头和 Referer 头来简单的验证该请求是否来自于受信任的安全站点，这种方法实现成本较低，但是不能 100%保证安全性，因为对于一些老旧浏览器是可以通过一些方法更改这些请求头的。主要方法服务端验证所有请求（也可以只验证增删改等敏感操作）的 Origin 和 Referer 头是否指向自家的网站地址，如果不是的话就拒绝请求即可。</p>
-</li>
-<li><p>2.同步器（CSRF）令牌</p>
-<p>通常，开发人员只需为当前会话生成一次令牌（登录时）。在初始生成此令牌之后，该值将存储在会话中，并用于每个后续请求，直到会话过期。当最终用户发出请求时，服务器端组件必须验证请求中令牌的存在性和有效性，与会话中找到的令牌相比较。如果在请求中找不到令牌，或者提供的值与会话中的值不匹配，则应中止请求。</p>
-</li>
-<li><p>3.自定义请求头这种防御依赖于同源策略（SOP）限制。默认情况下，浏览器不允许 JavaScript 发出跨源请求。目前使用最多的自定义头如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Requested-With：XMLHttpRequest</span><br></pre></td></tr></table></figure>
-<p>大多数 JavaScript 库已经将这个头添加到默认生成的请求中。这种方法具有双重优势，通常不需要 UI 更改，也不需要引入任何服务器端状态。</p>
-</li>
-</ul>
-<p>以上提到的方法并不全面，另有一些方法实现有些复杂并未提及。对于这些 CSRF 防范，前端能做的只是根据整个架构的方案进行配合，主要还是要靠服务端实现防御。服务端不同的语言的不同框架基本都有自己的实现和验证，基本都是默认开启的（方案 1）。方案二是目前我做过的项目用的最多的方法。一般做法是登录成功后服务端生成一个 token 给到前端，前端把这个 token 记录在本地，之后的每个请求都包含这个 token 在请求头之中，服务端接到请求后先进行 token 验证在处理请求。如果用户 session 过期，则退出登录重新获取。</p>
-
-    </article>
-    <!-- 前后页  -->
-    <ul class="post-pager">
-        
-            <li class="next">
-                <a href="/2017/10/15/关于XSS/" title=< %- page.prev.title  >
-                    <span>上一篇</span>
-                    <span>关于XSS</span>
-                </a>
-            </li>
-            
+                                                        <main class="main index-page">
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2017/07/10/关于TCP-IP/" >
                 
-                    <li class="previous">
-                        <a href="/2017/09/05/AngularJs的性能优化/" title=< %- page.next.title  >
-                    <span>下一篇</span>
-                    <span>AngularJs的性能优化</span>
-                </a>
-                    </li>
-                    
-    </ul>
-    <!-- 评论插件 -->
-    <!-- 来必力City版安装代码 -->
-
-<!-- City版安装代码已完成 -->
-        
-            
-                <!--PC版-->
-
-                    <!--PC版-->
-
-
-                        
-                            <!-- 评论 -->
+                    <span>关于TCP/IP</span>
+            </a>
+            <a class="content-show-full" href = "/2017/07/10/关于TCP-IP/" >
+                <div class="abstract-content">
+                    TCP/IP 的具体含义从字面意义上讲，有人可能会认为 TCP/IP 是指 TCP 和 IP 两种协议。实际生活当中有时也确实就是指这两种协议。然而在很多情况下，它只是利用 IP 进行通信时所必须用到的协议群的统称。具体来说，IP 或 ICMP、TCP 或 UDP、TELNET 或 FTP、以及 HTTP 等都属于 TCP/IP 协议。他们与 TCP 或 IP 的关系紧密，是互联网必不可少的组成部分。TCP/IP 一词泛指这些协议，因此，有时也称 TCP/IP 为网际协议群。互联网进行通信时，需要相应的网络协议，TCP/IP 原本就是为使用互联网而开发制定的协议族。因此，互联网的协议就是...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 优化>优化</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/07/10</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2017/06/18/关于HTTP/" >
+                
+                    <span>关于HTTP</span>
+            </a>
+            <a class="content-show-full" href = "/2017/06/18/关于HTTP/" >
+                <div class="abstract-content">
+                    HTTP 简介HTTP 协议是 Hyper Text Transfer Protocol（超文本传输协议）的缩写,是用于从万维网（WWW:World Wide Web ）服务器传输超文本到本地浏览器的传送协议。
+HTTP 是一个基于 TCP/IP 通信协议来传递数据（HTML 文件, 图片文件, 查询结果等）。
+HTTP 是一个属于应用层的面向对象的协议，由于其简捷、快速的方式，适用于分布式超媒体信息系统。它于 1990 年提出，经过几年的使用与发展，得到不断地完善和扩展。目前在 WWW 中使用的是 HTTP/1.0 的第六版，HTTP/1.1 的规范化工作正在进行之中，而且 HTTP-...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 优化>优化</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/06/18</span>
+                </div>
+            </div>
+        </article>
+    
+    <!-- paginator  -->
+    
+    <nav class="page-nav">
+        <a class="extend prev" rel="prev" href="/">#PREV</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    </nav>
+    
 </main>
                                                             <!-- profile -->
                                                             
+                                                                <div class="profile">
+    <img class="profile-avatar" src=/avatar/pig.jpg >
+    <div class="profile-name">
+        aFlappyPig
+    </div>
+    
+        <div class="profile-signature">
+            勿忘初心 及时行乐
+        </div>
+        
+            
+                <div class="profile-social">
+                    
+    
+        
+            
+                <a href="mailto:17621153307@163.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/aFlappyPig/" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+
+                </div>
+                
+                    
+                        <div class="friends">
+                            <div>友情链接</div>
+                            
+                                <span>
+                    <a href= https://liutaochange.github.io/ target="_black">liutaochange</a>
+                </span>
+                                
+                                <span>
+                    <a href= http://blog.hanguozhi.com target="_black">hanguozhi</a>
+                </span>
+                                
+                        </div>
+                        
+                            
+                                <div class="about-me">
+                                    <div>
+                                        <a href="/about">关于我</a>
+                                    </div>
+                                </div>
+                                
+</div>
+                                                                    
                                                     </div>
                                                     <footer class="footer footer-unloaded">
     <!-- social  -->
@@ -329,13 +325,6 @@
                                             </div>
                                             <!-- toc -->
                                             
-                                                <div class="toc-wrapper">
-                                                    <div class="toc-catalog">
-                                                        <span class="iconfont-archer catalog-icon">&#xe613;</span><span>目录</span>
-                                                    </div>
-                                                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSRF-简介"><span class="toc-number">1.</span> <span class="toc-text">CSRF 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSRF-攻击原理"><span class="toc-number">2.</span> <span class="toc-text">CSRF 攻击原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSRF-防范"><span class="toc-number">3.</span> <span class="toc-text">CSRF 防范</span></a></li></ol>
-                                                </div>
-                                                
                                                     <div class="back-top">&#xe639;</div>
                                                     <div class="sidebar">
     <div class="sidebar-header sidebar-header-show-archive">

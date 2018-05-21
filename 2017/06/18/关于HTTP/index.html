@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        web静态资源缓存 · aFlappyPig&#39;s Blog
+        关于HTTP · aFlappyPig&#39;s Blog
         
     </title>
     <link rel="icon" href= /assets/favicon.ico>
@@ -73,7 +73,7 @@
                 <a href="/" >aFlappyPig&#39;s Blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">web静态资源缓存</a>
+                <a href="#" class="post-name">关于HTTP</a>
             </div>
     </div>
     
@@ -94,7 +94,7 @@
                                                 <h1 class="intro-title">
                                                     <!-- 主页  -->
                                                     
-                                                                web静态资源缓存
+                                                                关于HTTP
                                                                     <!-- 404 -->
                                                                     
                                                 </h1>
@@ -112,9 +112,7 @@
                                                     
                                                         <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-href = 前端性能优化>前端性能优化</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = JS>JS</a>
+        <a class="post-tag" href="javascript:void(0);" data-href = 优化>优化</a>
     
 </div>
                                                             
@@ -135,7 +133,7 @@
                                                                 </script>
                                                                 <div class="post-intro-meta">
                                                                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                                                                    <span class="post-intro-time">2018/01/26</span>
+                                                                    <span class="post-intro-time">2017/06/18</span>
                                                                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe604;</span>
                                                                     <span id="busuanzi_value_page_pv"></span>
@@ -218,75 +216,48 @@
                                                     <div class="container container-unloaded">
                                                         <main class="main post-page">
     <article class="article-entry">
-        <p>声明：本文大部分内容系网上搜集并修改，如有侵权请告知。</p>
-<p><em>任何脱离业务特点的架构设计都是耍流氓</em></p>
-<h5 id="1-浏览器缓存基本认识"><a href="#1-浏览器缓存基本认识" class="headerlink" title="1. 浏览器缓存基本认识"></a>1. 浏览器缓存基本认识</h5><p>浏览器缓存分为强缓存和协商缓存：</p>
-<ul>
-<li>1）浏览器在加载资源时，先根据这个资源的一些 http header 判断它是否命中强缓存，强缓存如果命中，浏览器直接从自己的缓存中读取资源，不会发请求到服务器。比如某个 css 文件，如果浏览器在加载它所在的网页时，这个 css 文件的缓存配置命中了强缓存，浏览器就直接从缓存中加载这个 css，连请求都不会发送到网页所在服务器；</li>
-<li>2）当强缓存没有命中的时候，浏览器一定会发送一个请求到服务器，通过服务器端依据资源的另外一些 http header 验证这个资源是否命中协商缓存，如果协商缓存命中，服务器会将这个请求返回，但是不会返回这个资源的数据，而是告诉客户端可以直接从缓存中加载这个资源，于是浏览器就又会从自己的缓存中去加载这个资源；</li>
-<li>3）强缓存与协商缓存的共同点是：如果命中，都是从客户端缓存中加载资源，而不是从服务器加载资源数据；区别是：强缓存不发请求到服务器，协商缓存会发请求到服务器。</li>
-<li>4）当协商缓存也没有命中的时候，浏览器直接从服务器加载资源数据。</li>
-</ul>
-<h5 id="2-强缓存的原理"><a href="#2-强缓存的原理" class="headerlink" title="2. 强缓存的原理"></a>2. 强缓存的原理</h5><p>当浏览器对某个资源的请求命中了强缓存时，返回的 http 状态为 200，在 chrome 的开发者工具的 network 里面 size 会显示为 from cache，比如京东的首页里就有很多静态资源配置了强缓存，用 chrome 打开几次，再用 f12 查看 network，可以看到有不少请求就是从缓存中加载的。强缓存是利用 Expires 或者 Cache-Control 这两个 http response header 实现的，它们都用来表示资源在客户端缓存的有效期。<br>Expires 是 http1.0 提出的一个表示资源过期时间的 header，它描述的是一个绝对时间，由服务器返回，用 GMT 格式的字符串表示，如：Expires:Thu, 31 Dec 2037 23:55:55 GMT，它的缓存原理是：</p>
-<ul>
-<li>1）浏览器第一次跟服务器请求一个资源，服务器在返回这个资源的同时，在 respone 的 header 加上 Expires 的 header。</li>
-<li>2）浏览器在接收到这个资源后，会把这个资源连同所有 response header 一起缓存下来（所以缓存命中的请求返回的 header 并不是来自服务器，而是来自之前缓存的 header）。</li>
-<li>3）浏览器再请求这个资源时，先从缓存中寻找，找到这个资源后，拿出它的 Expires 跟当前的请求时间比较，如果请求时间在 Expires 指定的时间之前，就能命中缓存，否则就不行。</li>
-<li>4）如果缓存没有命中，浏览器直接从服务器加载资源时，Expires Header 在重新加载的时候会被更新。</li>
-</ul>
-<p>Expires 是较老的强缓存管理 header，由于它是服务器返回的一个绝对时间，在服务器时间与客户端时间相差较大时，缓存管理容易出现问题，比如随意修改下客户端时间，就能影响缓存命中的结果。所以在 http1.1 的时候，提出了一个新的 header，就是 Cache-Control，这是一个相对时间，在配置缓存的时候，以秒为单位，用数值表示，如：Cache-Control:max-age=315360000，它的缓存原理是：</p>
-<ul>
-<li>1）浏览器第一次跟服务器请求一个资源，服务器在返回这个资源的同时，在 respone 的 header 加上 Cache-Control 的 header。</li>
-<li>2）浏览器在接收到这个资源后，会把这个资源连同所有 response header 一起缓存下来；</li>
-<li>3）浏览器再请求这个资源时，先从缓存中寻找，找到这个资源后，根据它第一次的请求时间和 Cache-Control 设定的有效期，计算出一个资源过期时间，再拿这个过期时间跟当前的请求时间比较，如果请求时间在过期时间之前，就能命中缓存，否则就不行。</li>
-<li>4）如果缓存没有命中，浏览器直接从服务器加载资源时，Cache-Control Header 在重新加载的时候会被更新。</li>
-</ul>
-<p>Cache-Control 描述的是一个相对时间，在进行缓存命中的时候，都是利用客户端时间进行判断，所以相比较 Expires，Cache-Control 的缓存管理更有效，安全一些。这两个 header 可以只启用一个，也可以同时启用，当 response header 中，Expires 和 Cache-Control 同时存在时，Cache-Control 优先级高于 Expires。</p>
-<h5 id="3-强缓存的管理"><a href="#3-强缓存的管理" class="headerlink" title="3. 强缓存的管理"></a>3. 强缓存的管理</h5><p>在实际应用中我们会碰到需要强缓存的场景和不需要强缓存的场景，通常有 2 种方式来设置是否启用强缓存：</p>
-<ul>
-<li>1）通过代码的方式，在 web 服务器返回的响应中添加 Expires 和 Cache-Control Header；</li>
-<li>2）通过配置 web 服务器的方式，让 web 服务器在响应资源的时候统一添加 Expires 和 Cache-Control Header。</li>
-</ul>
-<p>由于在开发的时候不会专门去配置强缓存，而浏览器又默认会缓存图片，css 和 js 等静态资源，所以开发环境下经常会因为强缓存导致资源没有及时更新而看不到最新的效果，解决这个问题的方法有很多，常用的有以下几种：</p>
-<ul>
-<li>1）直接 ctrl+f5，这个办法能解决页面直接引用的资源更新的问题；</li>
-<li>2）使用浏览器的隐私模式开发；</li>
-<li>3）如果用的是 chrome，可以 f12 在 network 那里把缓存给禁掉（这是个非常有效的方法）；</li>
-<li>4）在开发阶段，给资源加上一个动态的参数，如 css/index.css?v=0.0001，由于每次资源的修改都要更新引用的位置，同时修改参数的值，所以操作起来不是很方便，除非你是在动态页面比如 jsp 里开发就可以用服务器变量来解决（v=${sysRnd}），或者你能用一些前端的构建工具来处理这个参数修改的问题；</li>
-<li>5）如果资源引用的页面，被嵌入到了一个 iframe 里面，可以在 iframe 的区域右键单击重新加载该页面；</li>
-<li>6）如果缓存问题出现在 ajax 请求中，最有效的解决办法就是 ajax 的请求地址追加随机数；</li>
-<li>7）还有一种情况就是动态设置 iframe 的 src 时，有可能也会因为缓存问题，导致看不到最新的效果，这时候在要设置的 src 后面添加随机数也能解决问题；</li>
-<li>8）如果你用的是 grunt 和 gulp 这种前端工具开发，通过它们的插件比如 grunt-contrib-connect 来启动一个静态服务器，则完全不用担心开发阶段的资源更新问题，因为在这个静态服务器下的所有资源返回的 respone header 中，cache-control 始终被设置为不缓存。</li>
-</ul>
-<h5 id="4-强缓存的应用"><a href="#4-强缓存的应用" class="headerlink" title="4. 强缓存的应用"></a>4. 强缓存的应用</h5><p>强缓存是前端性能优化最有力的工具，没有之一，对于有大量静态资源的网页，一定要利用强缓存，提高响应速度。通常的做法是，为这些静态资源全部配置一个超时时间超长的 Expires 或 Cache-Control，这样用户在访问网页时，只会在第一次加载时从服务器请求静态资源，其它时候只要缓存没有失效并且用户没有强制刷新的条件下都会从自己的缓存中加载。强缓存还有一点需要注意的是，通常都是针对静态资源使用，动态资源需要慎用，除了服务端页面可以看作动态资源外，那些引用静态资源的 html 也可以看作是动态资源，如果这种 html 也被缓存，当这些 html 更新之后，可能就没有机制能够通知浏览器这些 html 有更新，尤其是前后端分离的应用里，页面都是纯 html 页面，每个访问地址可能都是直接访问 html 页面，这些页面通常不加强缓存，以保证浏览器访问这些页面时始终请求服务器最新的资源。</p>
-<h5 id="5-协商缓存的原理"><a href="#5-协商缓存的原理" class="headerlink" title="5. 协商缓存的原理"></a>5. 协商缓存的原理</h5><p>当浏览器对某个资源的请求没有命中强缓存，就会发一个请求到服务器，验证协商缓存是否命中，如果协商缓存命中，请求响应返回的 http 状态为 304 并且会显示一个 Not Modified 的字符串，比如你打开京东的首页，按 f12 打开开发者工具，再按 f5 刷新页面，查看 network，可以看到有不少请求就是命中了协商缓存的，查看单个请求的 Response Header，也能看到 304 的状态码和 Not Modified 的字符串，只要看到这个就可说明这个资源是命中了协商缓存，然后从客户端缓存中加载的，而不是服务器最新的资源。协商缓存是利用的是【Last-Modified，If-Modified-Since】和【ETag、If-None-Match】这两对 Header 来管理的。【Last-Modified，If-Modified-Since】的控制缓存的原理是：</p>
-<p>1）浏览器第一次跟服务器请求一个资源，服务器在返回这个资源的同时，在 respone 的 header 加上 Last-Modified 的 header，这个 header 表示这个资源在服务器上的最后修改时间；<br>2）浏览器再次跟服务器请求这个资源时，在 request 的 header 上加上 If-Modified-Since 的 header，这个 header 的值就是上一次请求时返回的 Last-Modified 的值；<br>3）服务器再次收到资源请求时，根据浏览器传过来 If-Modified-Since 和资源在服务器上的最后修改时间判断资源是否有变化，如果没有变化则返回 304 Not Modified，但是不会返回资源内容；如果有变化，就正常返回资源内容。当服务器返回 304 Not Modified 的响应时，response header 中不会再添加 Last-Modified 的 header，因为既然资源没有变化，那么 Last-Modified 也就不会改变，这是服务器返回 304 时的 response header；<br>4）浏览器收到 304 的响应后，就会从缓存中加载资源。<br>5）如果协商缓存没有命中，浏览器直接从服务器加载资源时，Last-Modified Header 在重新加载的时候会被更新，下次请求时，If-Modified-Since 会启用上次返回的 Last-Modified 值。</p>
-<p>【Last-Modified，If-Modified-Since】都是根据服务器时间返回的 header，一般来说，在没有调整服务器时间和篡改客户端缓存的情况下，这两个 header 配合起来管理协商缓存是非常可靠的，但是有时候也会服务器上资源其实有变化，但是最后修改时间却没有变化的情况，而这种问题又很不容易被定位出来，而当这种情况出现的时候，就会影响协商缓存的可靠性。所以就有了另外一对 header 来管理协商缓存，这对 header 就是【ETag、If-None-Match】。它们的缓存管理的方式是：</p>
-<p>1）浏览器第一次跟服务器请求一个资源，服务器在返回这个资源的同时，在 respone 的 header 加上 ETag 的 header，这个 header 是服务器根据当前请求的资源生成的一个唯一标识，这个唯一标识是一个字符串，只要资源有变化这个串就不同，跟最后修改时间没有关系，所以能很好的补充 Last-Modified 的问题；<br>2）浏览器再次跟服务器请求这个资源时，在 request 的 header 上加上 If-None-Match 的 header，这个 header 的值就是上一次请求时返回的 ETag 的值；<br>3）服务器再次收到资源请求时，根据浏览器传过来 If-None-Match 和然后再根据资源生成一个新的 ETag，如果这两个值相同就说明资源没有变化，否则就是有变化；如果没有变化则返回 304 Not Modified，但是不会返回资源内容；如果有变化，就正常返回资源内容。与 Last-Modified 不一样的是，当服务器返回 304 Not Modified 的响应时，由于 ETag 重新生成过，response header 中还会把这个 ETag 返回，即使这个 ETag 跟之前的没有变化；<br>4）浏览器收到 304 的响应后，就会从缓存中加载资源。</p>
-<h5 id="6-协商缓存的管理"><a href="#6-协商缓存的管理" class="headerlink" title="6. 协商缓存的管理"></a>6. 协商缓存的管理</h5><p>协商缓存跟强缓存不一样，强缓存不发请求到服务器，所以有时候资源更新了浏览器还不知道，但是协商缓存会发请求到服务器，所以资源是否更新，服务器肯定知道。大部分 web 服务器都默认开启协商缓存，而且是同时启用【Last-Modified，If-Modified-Since】和【ETag、If-None-Match】如果没有协商缓存，每个到服务器的请求，就都得返回资源内容，这样服务器的性能会极差。【Last-Modified，If-Modified-Since】和【ETag、If-None-Match】一般都是同时启用，这是为了处理 Last-Modified 不可靠的情况。有一种场景需要注意：分布式系统里多台机器间文件的 Last-Modified 必须保持一致，以免负载均衡到不同机器导致比对失败；分布式系统尽量关闭掉 ETag(每台机器生成的 ETag 都会不一样）；协商缓存需要配合强缓存使用，某些请求中除了 Last-Modified 这个 header，还有强缓存的相关 header，因为如果不启用强缓存的话，协商缓存根本没有意义。</p>
-<h5 id="7-浏览器行为对缓存的影响"><a href="#7-浏览器行为对缓存的影响" class="headerlink" title="7. 浏览器行为对缓存的影响"></a>7. 浏览器行为对缓存的影响</h5><p>如果资源已经被浏览器缓存下来，在缓存失效之前，再次请求时，默认会先检查是否命中强缓存，如果强缓存命中则直接读取缓存，如果强缓存没有命中则发请求到服务器检查是否命中协商缓存，如果协商缓存命中，则告诉浏览器还是可以从缓存读取，否则才从服务器返回最新的资源。这是默认的处理方式，这个方式可能被浏览器的行为改变：</p>
-<p>1）当 ctrl+f5 强制刷新网页时，直接从服务器加载，跳过强缓存和协商缓存；</p>
-<p>2）当 f5 刷新网页时，跳过强缓存，但是会检查协商缓存。</p>
+        <h4 id="HTTP-简介"><a href="#HTTP-简介" class="headerlink" title="HTTP 简介"></a>HTTP 简介</h4><p>HTTP 协议是 Hyper Text Transfer Protocol（超文本传输协议）的缩写,是用于从万维网（WWW:World Wide Web ）服务器传输超文本到本地浏览器的传送协议。</p>
+<p>HTTP 是一个基于 TCP/IP 通信协议来传递数据（HTML 文件, 图片文件, 查询结果等）。</p>
+<p>HTTP 是一个属于应用层的面向对象的协议，由于其简捷、快速的方式，适用于分布式超媒体信息系统。它于 1990 年提出，经过几年的使用与发展，得到不断地完善和扩展。目前在 WWW 中使用的是 HTTP/1.0 的第六版，HTTP/1.1 的规范化工作正在进行之中，而且 HTTP-NG(Next Generation of HTTP)的建议已经提出。</p>
+<p>HTTP 协议工作于客户端-服务端架构为上。浏览器作为 HTTP 客户端通过 URL 向 HTTP 服务端即 WEB 服务器发送所有请求。Web 服务器根据接收到的请求后，向客户端发送响应信息。</p>
+<h4 id="主要特点"><a href="#主要特点" class="headerlink" title="主要特点"></a>主要特点</h4><ol>
+<li><p>简单快速：客户向服务器请求服务时，只需传送请求方法和路径。请求方法常用的有 GET、HEAD、POST。每种方法规定了客户与服务器联系的类型不同。由于 HTTP 协议简单，使得 HTTP 服务器的程序规模小，因而通信速度很快。</p>
+</li>
+<li><p>灵活：HTTP 允许传输任意类型的数据对象。正在传输的类型由 Content-Type 加以标记。</p>
+</li>
+<li><p>无连接：无连接的含义是限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接。采用这种方式可以节省传输时间。</p>
+</li>
+<li><p>无状态：HTTP 协议是无状态协议。无状态是指协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就较快。</p>
+</li>
+<li>支持 B/S 及 C/S 模式。</li>
+</ol>
+<h4 id="HTTP-之-URL"><a href="#HTTP-之-URL" class="headerlink" title="HTTP 之 URL"></a>HTTP 之 URL</h4><p>HTTP 使用统一资源标识符（Uniform Resource Identifiers, URI）来传输数据和建立连接。URL 是一种特殊类型的 URI，包含了用于查找某个资源的足够的信息</p>
+<p>URL,全称是 UniformResourceLocator, 中文叫统一资源定位符,是互联网上用来标识某一处资源的地址。以下面这个 URL 为例，介绍下普通 URL 的各部分组成：</p>
+<p><a href="http://www.aspxfans.com:8080/news/index.asp?boardID=5&amp;ID=24618&amp;page=1#name" target="_blank" rel="noopener">http://www.aspxfans.com:8080/news/index.asp?boardID=5&amp;ID=24618&amp;page=1#name</a><br>从上面的 URL 可以看出，一个完整的 URL 包括以下几部分： 1.协议部分：该 URL 的协议部分为“http：”，这代表网页使用的是 HTTP 协议。在 Internet 中可以使用多种协议，如 HTTP，FTP 等等本例中使用的是 HTTP 协议。在”HTTP”后面的“//”为分隔符</p>
+<p>2.域名部分：该 URL 的域名部分为“www.aspxfans.com”。一个 URL 中，也可以使用 IP 地址作为域名使用</p>
+<p>3.端口部分：跟在域名后面的是端口，域名和端口之间使用“:”作为分隔符。端口不是一个 URL 必须的部分，如果省略端口部分，将采用默认端口</p>
+<p>4.虚拟目录部分：从域名后的第一个“/”开始到最后一个“/”为止，是虚拟目录部分。虚拟目录也不是一个 URL 必须的部分。本例中的虚拟目录是“/news/”</p>
+<p>5.文件名部分：从域名后的最后一个“/”开始到“？”为止，是文件名部分，如果没有“?”,则是从域名后的最后一个“/”开始到“#”为止，是文件部分，如果没有“？”和“#”，那么从域名后的最后一个“/”开始到结束，都是文件名部分。本例中的文件名是“index.asp”。文件名部分也不是一个 URL 必须的部分，如果省略该部分，则使用默认的文件名</p>
+<p>6.锚部分：从“#”开始到最后，都是锚部分。本例中的锚部分是“name”。锚部分也不是一个 URL 必须的部分</p>
+<p>7.参数部分：从“？”开始到“#”为止之间的部分为参数部分，又称搜索部分、查询部分。本例中的参数部分为“boardID=5&amp;ID=24618&amp;page=1”。参数可以允许有多个参数，参数与参数之间用“&amp;”作为分隔符。</p>
+<h4 id="HTTP-之状态码"><a href="#HTTP-之状态码" class="headerlink" title="HTTP 之状态码"></a>HTTP 之状态码</h4><p>状态代码有三位数字组成，第一个数字定义了响应的类别，共分五种类别:</p>
+<p>1xx：指示信息–表示请求已接收，继续处理<br>2xx：成功–表示请求已被成功接收、理解、接受<br>3xx：重定向–要完成请求必须进行更进一步的操作<br>4xx：客户端错误–请求有语法错误或请求无法实现<br>5xx：服务器端错误–服务器未能实现合法的请求</p>
+<p>常见状态码：<br>200 OK //客户端请求成功<br>400 Bad Request //客户端请求有语法错误，不能被服务器所理解<br>401 Unauthorized //请求未经授权，这个状态代码必须和 WWW-Authenticate 报头域一起使用<br>403 Forbidden //服务器收到请求，但是拒绝提供服务<br>404 Not Found //请求资源不存在，eg：输入了错误的 URL<br>500 Internal Server Error //服务器发生不可预期的错误<br>503 Server Unavailable //服务器当前不能处理客户端的请求，一段时间后可能恢复正常</p>
+<h4 id="HTTP-请求方法"><a href="#HTTP-请求方法" class="headerlink" title="HTTP 请求方法"></a>HTTP 请求方法</h4><p>根据 HTTP 标准，HTTP 请求可以使用多种请求方法。<br>HTTP1.0 定义了三种请求方法： GET, POST 和 HEAD 方法。<br>HTTP1.1 新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方法。</p>
+<p>GET 请求指定的页面信息，并返回实体主体。<br>HEAD 类似于 get 请求，只不过返回的响应中没有具体的内容，用于获取报头<br>POST 向指定资源提交数据进行处理请求（例如提交表单或者上传文件）。数据被包含在请求体中。POST 请求可能会导致新的资源的建立和/或已有资源的修改。<br>PUT 从客户端向服务器传送的数据取代指定的文档的内容。<br>DELETE 请求服务器删除指定的页面。<br>CONNECT HTTP/1.1 协议中预留给能够将连接改为管道方式的代理服务器。<br>OPTIONS 允许客户端查看服务器的性能。<br>TRACE 回显服务器收到的请求，主要用于测试或诊断。</p>
 
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
         
             <li class="next">
-                <a href="/2018/01/29/web前端性能优化实战/" title=< %- page.prev.title  >
+                <a href="/2017/07/10/关于TCP-IP/" title=< %- page.prev.title  >
                     <span>上一篇</span>
-                    <span>web前端性能优化实战</span>
+                    <span>关于TCP/IP</span>
                 </a>
             </li>
             
                 
-                    <li class="previous">
-                        <a href="/2018/01/18/js中的小数计算/" title=< %- page.next.title  >
-                    <span>下一篇</span>
-                    <span>js中的小数计算</span>
-                </a>
-                    </li>
-                    
     </ul>
     <!-- 评论插件 -->
     <!-- 来必力City版安装代码 -->
@@ -345,7 +316,7 @@
                                                     <div class="toc-catalog">
                                                         <span class="iconfont-archer catalog-icon">&#xe613;</span><span>目录</span>
                                                     </div>
-                                                    <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-浏览器缓存基本认识"><span class="toc-number">1.</span> <span class="toc-text">1. 浏览器缓存基本认识</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-强缓存的原理"><span class="toc-number">2.</span> <span class="toc-text">2. 强缓存的原理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-强缓存的管理"><span class="toc-number">3.</span> <span class="toc-text">3. 强缓存的管理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-强缓存的应用"><span class="toc-number">4.</span> <span class="toc-text">4. 强缓存的应用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-协商缓存的原理"><span class="toc-number">5.</span> <span class="toc-text">5. 协商缓存的原理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-协商缓存的管理"><span class="toc-number">6.</span> <span class="toc-text">6. 协商缓存的管理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#7-浏览器行为对缓存的影响"><span class="toc-number">7.</span> <span class="toc-text">7. 浏览器行为对缓存的影响</span></a></li></ol>
+                                                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-简介"><span class="toc-number">1.</span> <span class="toc-text">HTTP 简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#主要特点"><span class="toc-number">2.</span> <span class="toc-text">主要特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-之-URL"><span class="toc-number">3.</span> <span class="toc-text">HTTP 之 URL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-之状态码"><span class="toc-number">4.</span> <span class="toc-text">HTTP 之状态码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-请求方法"><span class="toc-number">5.</span> <span class="toc-text">HTTP 请求方法</span></a></li></ol>
                                                 </div>
                                                 
                                                     <div class="back-top">&#xe639;</div>
